@@ -1,489 +1,458 @@
-import {useState} from "react";
+import { useState } from "react";
 import {
-    Box,
-    Button,
-    ChakraProvider,
-    Collapse,
-    Container,
-    extendTheme,
-    Flex,
-    FormControl,
-    FormLabel,
-    Heading,
-    HStack,
-    Icon,
-    IconButton,
-    Image,
-    Input,
-    Text,
-    Textarea,
-    useDisclosure,
-    VStack,
+  Box,
+  Button,
+  ChakraProvider,
+  Collapse,
+  Container,
+  extendTheme,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  HStack,
+  Icon,
+  IconButton,
+  Image,
+  Input,
+  Link,
+  Text,
+  Textarea,
+  useDisclosure,
+  VStack,
+  SimpleGrid,
+  Stack,
+  Divider,
 } from "@chakra-ui/react";
-import {FaAndroid, FaApple, FaGlobe, FaMobileAlt, FaReact,} from "react-icons/fa";
-import {ReactTyped} from "react-typed";
-import bbdevsLogo from "../assets/logo.png";
-import {SiFirebase, SiFlutter, SiVite, SiWordpress} from "react-icons/si";
-import Slider from "react-slick";
-import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
+import {
+  FaAndroid,
+  FaApple,
+  FaGlobe,
+  FaMobileAlt,
+  FaReact,
+} from "react-icons/fa";
+import { SiFirebase, SiFlutter, SiVite, SiWordpress } from "react-icons/si";
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import emailjs from "emailjs-com";
+import ReCAPTCHA from "react-google-recaptcha";
+
+/* ─────────────────────────────
+   Theme — ABM Codeworks branding
+   ───────────────────────────── */
+const theme = extendTheme({
+  fonts: { heading: "Poppins, sans-serif", body: "Poppins, sans-serif" },
+  colors: {
+    abm: {
+      navy: "#0F1F39", // pulled from your logo
+      ink: "#142645",
+      teal: "#2C7A7B", // accent
+      paper: "#F5F5F3",
+    },
+  },
+  styles: {
+    global: {
+      body: { bg: "abm.paper", color: "abm.ink", overflowX: "hidden" },
+    },
+  },
+});
+
+/* ─────────────────────────────
+   Assets
+   ───────────────────────────── */
+import logo from "../assets/logo.png";
+import ruzawi from "../assets/ruzawi.png";
 import zimgin from "../assets/zimgin.png";
 import cranesafaris from "../assets/cranesafaris.png";
 import thf from "../assets/thf.png";
-import ruzawi from "../assets/ruzawi.png";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "@fontsource/poppins/400.css";
-import "@fontsource/poppins/500.css";
-import "@fontsource/poppins/600.css";
-import "@fontsource/poppins/700.css";
-import ReCAPTCHA from "react-google-recaptcha";
 
-// Extend Chakra UI theme to use Poppins font
-const theme = extendTheme({
-    fonts: {
-        heading: "Poppins, sans-serif", // Set for headings
-        body: "Poppins, sans-serif", // Set for body text
-    },
-});
-
+/* ─────────────────────────────
+   Component
+   ───────────────────────────── */
 function Home() {
-    const {isOpen, onToggle} = useDisclosure();
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        message: "",
-    });
+  const { isOpen, onToggle } = useDisclosure();
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const [recaptchaToken, setRecaptchaToken] = useState(null); // Track reCAPTCHA token state
-    const [isSubmitting, setIsSubmitting] = useState(false); // Handle form submission state
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!recaptchaToken) {
+      alert("Please verify that you are not a robot.");
+      return;
+    }
+    setIsSubmitting(true);
+    emailjs
+      .sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        e.target,
+        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY },
+      )
+      .then(() => alert("Message sent successfully!"))
+      .catch(() => alert("Failed to send message. Please try again."))
+      .finally(() => {
+        setIsSubmitting(false);
+        setRecaptchaToken(null);
+        e.target.reset();
+      });
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  return (
+    <ChakraProvider theme={theme}>
+      {/* NAVBAR */}
+      <Box
+        as="nav"
+        bg="abm.navy"
+        color="white"
+        position="sticky"
+        top="0"
+        zIndex="10"
+      >
+        <Container maxW="container.xl" py={3}>
+          <Flex align="center" justify="space-between">
+            <HStack spacing={3}>
+              <Image src={logo} alt="ABM Codeworks" boxSize="40px" />
+              <Heading as="h1" size="md" letterSpacing="wide">
+                ABM Codeworks
+              </Heading>
+            </HStack>
 
-        if (!recaptchaToken) {
-            alert("Please verify that you are not a robot.");
-            return;
-        }
+            <HStack display={{ base: "none", md: "flex" }} spacing={8}>
+              <NavLink href="#home" text="Home" />
+              <NavLink href="#about" text="About" />
+              <NavLink href="#services" text="Services" />
+              <NavLink href="#clients" text="Clients" />
+              <Button as="a" href="#contact" colorScheme="teal" size="sm">
+                Contact
+              </Button>
+            </HStack>
 
-        setIsSubmitting(true);
+            <IconButton
+              aria-label="Menu"
+              icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+              display={{ base: "inline-flex", md: "none" }}
+              onClick={onToggle}
+              color="white"
+              variant="ghost"
+            />
+          </Flex>
+        </Container>
 
-        emailjs
-            .sendForm(
-                import.meta.env.VITE_EMAILJS_SERVICE_ID, // Using env variables
-                import.meta.env.VITE_EMAILJS_TEMPLATE_ID, // Using env variables
-                e.target,
-                {
-                    publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY, // Using env variables
-                },
-            )
-            .then(
-                (result) => {
-                    alert("Message sent successfully!");
-                },
-                (error) => {
-                    alert("Failed to send the message, please try again.");
-                },
-            )
-            .finally(() => {
-                setIsSubmitting(false);
-                setRecaptchaToken(null); // Reset reCAPTCHA after form submission
-                e.target.reset(); // Reset form fields
-            });
-    };
+        <Collapse in={isOpen} animateOpacity>
+          <VStack
+            bg="abm.ink"
+            align="stretch"
+            py={3}
+            px={4}
+            display={{ md: "none" }}
+          >
+            <NavLink href="#home" text="Home" onClick={onToggle} />
+            <NavLink href="#about" text="About" onClick={onToggle} />
+            <NavLink href="#services" text="Services" onClick={onToggle} />
+            <NavLink href="#clients" text="Clients" onClick={onToggle} />
+            <Button
+              as="a"
+              href="#contact"
+              colorScheme="teal"
+              onClick={onToggle}
+            >
+              Contact
+            </Button>
+          </VStack>
+        </Collapse>
+      </Box>
 
-    const handleRecaptchaChange = (token) => {
-        setRecaptchaToken(token); // Update reCAPTCHA token state
-    };
+      {/* HERO */}
+      <Box id="home" bg="white">
+        <Container maxW="container.xl" py={{ base: 16, md: 24 }}>
+          <Flex
+            gap={12}
+            align="center"
+            direction={{ base: "column", md: "row" }}
+          >
+            <VStack align="flex-start" spacing={6} flex="1">
+              <Heading
+                as="h2"
+                fontSize={{ base: "3xl", md: "5xl" }}
+                color="abm.navy"
+              >
+                Engineering Reliable Software for Ambitious Teams
+              </Heading>
+              <Text
+                fontSize={{ base: "md", md: "lg" }}
+                color="gray.600"
+                maxW="2xl"
+              >
+                ABM Codeworks designs and builds robust web and mobile
+                applications, integrating modern architectures and cloud
+                services to help organisations move faster with confidence.
+              </Text>
+              <HStack spacing={4}>
+                <Button as="a" href="#contact" colorScheme="teal" size="md">
+                  Start a Project
+                </Button>
+                <Button as="a" href="#services" variant="outline" size="md">
+                  Our Services
+                </Button>
+              </HStack>
+            </VStack>
 
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData({...formData, [name]: value});
-    };
-
-    const sliderSettings = {
-        dots: true,
-        infinite: true,
-        autoplay: true,
-        speed: 500,
-        slidesToShow: 3, // Adjust this based on how many logos you want to show at once
-        slidesToScroll: 1,
-        responsive: [
-            {
-                breakpoint: 768, // For tablets and small screens
-                settings: {
-                    dots: true,
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 480, // For mobile screens
-                settings: {
-                    dots: true,
-                    slidesToShow: 1,
-                },
-            },
-        ],
-    };
-
-    return (
-        <ChakraProvider theme={theme}>
-            {/* Navigation Bar */}
-
-            <Box as="nav" bg="teal.900" p={4} w="100vw">
-                <VStack justifyContent="space-between" alignItems="center">
-                    {/* Hamburger Icon (Visible only on mobile) */}
-                    <IconButton
-                        aria-label="Open Menu"
-                        icon={isOpen ? <CloseIcon/> : <HamburgerIcon/>}
-                        display={{base: "block", md: "none"}}
-                        onClick={onToggle}
-                        color="gray.100" // Better contrast for the icon
-                    />
-                    {/* Nav Links (Visible only on larger screens) */}
-                    <HStack
-                        spacing={14}
-                        alignItems="center"
-                        display={{base: "none", md: "flex"}}
-                    >
-                        <Button as="a" href="#home" variant="link" color="gray.100">
-                            Home
-                        </Button>
-                        <Button as="a" href="#about" variant="link" color="gray.100">
-                            About Us
-                        </Button>
-                        <Button as="a" href="#clients" variant="link" color="gray.100">
-                            Our Clients
-                        </Button>
-                        <Button as="a" href="#contact" variant="link" color="gray.100">
-                            Contact Us
-                        </Button>
-                    </HStack>
-                </VStack>
-
-                {/* Mobile Menu (Visible only on mobile) */}
-                <Collapse in={isOpen} animateOpacity>
-                    <VStack bg="gray.200" p={4} spacing={6} alignItems="center">
-                        <Button as="a" href="#home" variant="link" onClick={onToggle}>
-                            Home
-                        </Button>
-                        <Button as="a" href="#about" variant="link" onClick={onToggle}>
-                            About Us
-                        </Button>
-                        <Button as="a" href="#clients" variant="link" onClick={onToggle}>
-                            Our Clients
-                        </Button>
-                        <Button as="a" href="#contact" variant="link" onClick={onToggle}>
-                            Contact Us
-                        </Button>
-                    </VStack>
-                </Collapse>
+            <Box flex="1" textAlign="center">
+              <Image
+                src={logo}
+                alt="ABM Codeworks logo"
+                maxW="380px"
+                mx="auto"
+              />
             </Box>
+          </Flex>
+        </Container>
+      </Box>
 
-            <Container maxW="100vw" px="0">
-                {/* Header Section */}
-                <Box
-                    as="header"
-                    id="home"
-                    minH="100vh" // Full height
-                    width="100%" // Full width
-                    position="relative" // For relative positioning
-                    bg="gray.50" // Background color
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    px={8}
-                >
-                    <Box
-                        position="absolute"
-                        top="0"
-                        left="0"
-                        width="100%" // Full width
-                        height="100%" // Full height
-                        sx={{
-                            backgroundImage: "url(circuit-board.svg)",
-                            backgroundSize: "500px 500px",
-                            backgroundRepeat: "repeat",
-                            opacity: "0.05",
-                        }}
-                    />
-                    {/* Your content here */}
-                    <Flex
-                        direction={{base: "column", md: "row"}} // Column on mobile, row on larger screens
-                        align="center"
-                        justify="space-between"
-                        width="100%"
-                        maxW="1200px" // Limits content width
-                    >
-                        {/* Logo on the Left */}
-                        <Box
-                            flex="1"
-                            mb={{base: 8, md: 0}}
-                            textAlign={{base: "center", md: "left"}}
-                            position="relative" // For positioning effects
-                        >
-                            <Image
-                                src={bbdevsLogo}
-                                alt="BBDevs Logo"
-                                w={{base: "150px", md: "500px"}}
-                            />
-                        </Box>
+      <Divider />
 
-                        {/* Text and Animated Heading on the Right */}
-                        <VStack
-                            flex="2"
-                            spacing={6}
-                            align={{base: "center", md: "flex-start"}} // Center on mobile, align left on larger screens
-                        >
-                            <Heading
-                                as="h1"
-                                color="teal.700"
-                                fontSize={{base: "4xl", md: "5xl"}}
-                            >
-                                Welcome to BBDevs
-                            </Heading>
+      {/* ABOUT */}
+      <Box id="about" bg="abm.paper">
+        <Container maxW="container.xl" py={{ base: 12, md: 16 }}>
+          <Stack spacing={6}>
+            <Heading size="lg" color="abm.navy" textAlign="center">
+              About Us
+            </Heading>
+            <Text textAlign="center" color="gray.700" maxW="3xl" mx="auto">
+              Based in Zimbabwe, ABM Codeworks partners with schools,
+              non-profits, and businesses to deliver dependable software. From
+              strategy to deployment, we focus on performance, security, and
+              scalability—so your systems grow with you.
+            </Text>
+          </Stack>
+        </Container>
+      </Box>
 
-                            <Text
-                                as="b"
-                                fontSize={{base: "xl", md: "2xl"}}
-                                color="gray.700"
-                            >
-                                <ReactTyped
-                                    strings={[
-                                        "Empowering businesses through bespoke mobile and web applications.",
-                                        "Crafting responsive, high-performance websites that drive results.",
-                                        "Delivering seamless, intuitive solutions for Android and iOS platforms.",
-                                        "Leveraging cutting-edge technologies to bring your ideas to life.",
-                                        "Transforming digital visions into reality with robust, scalable solutions.",
-                                        "Innovating with the latest tools to build secure, future-proof applications.",
-                                    ]}
-                                    typeSpeed={50}
-                                    backDelay={2000}
-                                    fadeOut={true}
-                                    loop
-                                />
-                            </Text>
-                        </VStack>
-                    </Flex>
-                </Box>{" "}
-                <Box as="section" id="about" py={10}>
-                    <Container maxW="container.lg">
-                        <Heading as="h2" color="teal.700" textAlign="center" mb={6}>
-                            About Us
-                        </Heading>
-                        <Text fontSize="lg" textAlign="center" color="gray.700" mb={4}>
-                            We are a Zimbabwean-based company with a decade of experience in
-                            delivering high-quality, innovative solutions. Our diverse skill
-                            set allows us to tackle a wide range of projects, from mobile and
-                            web development to cloud technologies and digital transformation.
-                        </Text>
-                        <Text fontSize="lg" textAlign="center" color="gray.700">
-                            We pride ourselves on adapting to the evolving needs of businesses
-                            and consistently delivering results. Our commitment lies in
-                            offering the expertise and creativity needed to bring your ideas
-                            to life.
-                        </Text>
-                    </Container>
-                </Box>
-                {/* Our Services Section */}
-                <Box as="section" id="services" py={10}>
-                    <Container maxW="container.lg">
-                        <Heading as="h2" textAlign="center" mb={6} color="teal.700">
-                            Our Services
-                        </Heading>
-                        <Text textAlign="center" mb={6} fontSize="xl" color="gray.700">
-                            We specialize in the development of both mobile and web
-                            applications, as well as fully responsive websites. Our expertise
-                            spans across platforms, including Android and iOS, utilizing a
-                            wide range of cutting-edge technologies to deliver innovative and
-                            high-performance solutions.
-                        </Text>
-                        {/* Services Icons */}
-                        <VStack spacing={10} align="center">
-                            <HStack spacing={10}>
-                                {/* Mobile Development */}
-                                <VStack>
-                                    <Icon as={FaMobileAlt} w={12} h={12} color="teal.600"/>
-                                    <Text>Mobile Apps</Text>
-                                </VStack>
-                                {/* Android */}
-                                <VStack>
-                                    <Icon as={FaAndroid} w={12} h={12} color="green.500"/>
-                                    <Text>Android Development</Text>
-                                </VStack>
-                                {/* Apple */}
-                                <VStack>
-                                    <Icon as={FaApple} w={12} h={12} color="gray.800"/>
-                                    <Text>Apple Development</Text>
-                                </VStack>
-                            </HStack>
-                            <HStack spacing={10}>
-                                {/* Web Development */}
-                                <VStack>
-                                    <Icon as={FaGlobe} w={12} h={12} color="teal.600"/>
-                                    <Text>Web Development</Text>
-                                </VStack>
-                                {/* React */}
-                                <VStack>
-                                    <Icon as={FaReact} w={12} h={12} color="blue.500"/>
-                                    <Text>React</Text>
-                                </VStack>
-                                {/* Vite */}
-                                <VStack>
-                                    <Icon as={SiVite} w={12} h={12} color="purple.600"/>
-                                    <Text>Vite</Text>
-                                </VStack>
-                                {/* Firebase */}
-                                <VStack>
-                                    <Icon as={SiFirebase} w={12} h={12} color="orange.400"/>
-                                    <Text>Firebase</Text>
-                                </VStack>
-                                {/* Flutter */}
-                                <VStack>
-                                    <Icon as={SiFlutter} w={12} h={12} color="blue.400"/>
-                                    <Text>Flutter</Text>
-                                </VStack>
-                                <VStack>
-                                    <Icon as={SiWordpress} w={12} h={12} color="black"/>
-                                    <Text>Wordpress</Text>
-                                </VStack>
-                            </HStack>
-                        </VStack>
-                    </Container>
-                </Box>
-                {/* Our Clients Section */}
-                <Box as="section" id="clients" py={10}>
-                    <Container maxW="container.lg">
-                        <Heading as="h2" textAlign="center" mb={6} color="teal.700">
-                            Our Clients
-                        </Heading>
-                        {/* Slick Carousel */}
-                        <Slider {...sliderSettings}>
-                            {/* Carousel Items */}
-                            <Box
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                                height="150px"
-                            >
-                                <a
-                                    href="https://ruzawi.com"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <img
-                                        src={ruzawi}
-                                        draggable="false"
-                                        alt="Ruzawi School"
-                                        style={{maxHeight: "100%", maxWidth: "100%"}}
-                                    />
-                                </a>
-                            </Box>
-                            <Box
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                                height="150px"
-                            >
-                                <a
-                                    href="https://zimgin.com"
-                                    draggable="false"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <img
-                                        src={zimgin}
-                                        alt="Zimbabwe Gin"
-                                        style={{maxHeight: "100%", maxWidth: "100%"}}
-                                    />
-                                </a>
-                            </Box>
-                            <Box
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                                height="150px"
-                            >
-                                <a
-                                    href="https://cranesafaris.co.zw"
-                                    draggable="false"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <img
-                                        src={cranesafaris}
-                                        alt="Crane Safaris"
-                                        style={{maxHeight: "100%", maxWidth: "100%"}}
-                                    />
-                                </a>
-                            </Box>
-                            <Box
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                                height="150px"
-                            >
-                                <a
-                                    href="https://tikkihywoodfoundation.org"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <img
-                                        src={thf}
-                                        draggable="false"
-                                        alt="Tikki Hywood Foundation"
-                                        style={{maxHeight: "100%", maxWidth: "100%"}}
-                                    />
-                                </a>
-                            </Box>
-                        </Slider>
-                    </Container>
-                </Box>
-                {/* Contact Us Section */}
-                <Box as="section" id="contact" py={10}>
-                    <Container maxW="container.lg">
-                        <Heading as="h2" color="teal.700" textAlign="center" mb={6}>
-                            Contact Us
-                        </Heading>
-                        <form onSubmit={handleSubmit}>
-                            <VStack spacing={4}>
-                                <FormControl isRequired>
-                                    <FormLabel>Name</FormLabel>
-                                    <Input type="text" name="name" onChange={handleChange}/>
-                                </FormControl>
+      {/* SERVICES */}
+      <Box id="services" bg="white">
+        <Container maxW="container.xl" py={{ base: 12, md: 16 }}>
+          <Heading size="lg" color="abm.navy" textAlign="center" mb={10}>
+            Services
+          </Heading>
+          <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={8}>
+            <ServiceCard
+              icon={FaMobileAlt}
+              title="Mobile Applications"
+              desc="Native-quality apps for Android and iOS built with Flutter."
+            />
+            <ServiceCard
+              icon={FaGlobe}
+              title="Web Applications"
+              desc="Modern React/Vite front-ends and reliable back-ends."
+            />
+            <ServiceCard
+              icon={SiFirebase}
+              title="Cloud Integration"
+              desc="Realtime data, auth, and serverless functions with Firebase."
+            />
+            <ServiceCard
+              icon={FaReact}
+              title="React Engineering"
+              desc="Component-driven UIs with performance at scale."
+            />
+            <ServiceCard
+              icon={SiFlutter}
+              title="Flutter Development"
+              desc="Single codebase, pixel-perfect multi-platform UX."
+            />
+            <ServiceCard
+              icon={SiWordpress}
+              title="Websites & CMS"
+              desc="Fast, responsive marketing sites and content systems."
+            />
+            <ServiceCard
+              icon={SiVite}
+              title="Tooling & Build"
+              desc="Vite-based DX, CI/CD, and automated testing."
+            />
+            <ServiceCard
+              icon={FaAndroid}
+              title="Android"
+              desc="Play Store delivery, integrations, and QA."
+            />
+            <ServiceCard
+              icon={FaApple}
+              title="iOS"
+              desc="App Store compliance and publishing workflow."
+            />
+          </SimpleGrid>
+        </Container>
+      </Box>
 
-                                <FormControl isRequired>
-                                    <FormLabel>Email</FormLabel>
-                                    <Input type="email" name="email" onChange={handleChange}/>
-                                </FormControl>
+      {/* CLIENTS */}
+      <Box id="clients" bg="abm.paper">
+        <Container maxW="container.xl" py={{ base: 12, md: 16 }}>
+          <Heading size="lg" color="abm.navy" textAlign="center" mb={10}>
+            Selected Clients
+          </Heading>
+          <SimpleGrid
+            columns={{ base: 2, sm: 3, md: 4 }}
+            spacing={8}
+            alignItems="center"
+          >
+            <ClientLogo
+              href="https://ruzawi.com"
+              src={ruzawi}
+              alt="Ruzawi School"
+            />
+            <ClientLogo
+              href="https://zimgin.com"
+              src={zimgin}
+              alt="Zimbabwe Gin"
+            />
+            <ClientLogo
+              href="https://cranesafaris.co.zw"
+              src={cranesafaris}
+              alt="Crane Safaris"
+            />
+            <ClientLogo
+              href="https://tikkihywoodfoundation.org"
+              src={thf}
+              alt="Tikki Hywood Foundation"
+            />
+          </SimpleGrid>
+        </Container>
+      </Box>
 
-                                <FormControl isRequired>
-                                    <FormLabel>Message</FormLabel>
-                                    <Textarea name="message" onChange={handleChange}/>
-                                </FormControl>
+      {/* CONTACT */}
+      <Box id="contact" bg="white">
+        <Container maxW="container.md" py={{ base: 12, md: 16 }}>
+          <Heading size="lg" color="abm.navy" textAlign="center" mb={8}>
+            Contact Us
+          </Heading>
 
-                                {/* reCAPTCHA Component */}
-                                <ReCAPTCHA
-                                    sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} // Your reCAPTCHA site key
-                                    onChange={handleRecaptchaChange}
-                                />
+          <Box
+            as="form"
+            onSubmit={handleSubmit}
+            bg="white"
+            p={{ base: 6, md: 8 }}
+            borderRadius="xl"
+            boxShadow="sm"
+          >
+            <VStack spacing={5} align="stretch">
+              <FormControl isRequired>
+                <FormLabel>Name</FormLabel>
+                <Input type="text" name="name" placeholder="Your name" />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="you@company.com"
+                />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>Message</FormLabel>
+                <Textarea
+                  name="message"
+                  rows={5}
+                  placeholder="How can we help?"
+                />
+              </FormControl>
+              <ReCAPTCHA
+                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                onChange={setRecaptchaToken}
+              />
+              <Button
+                type="submit"
+                colorScheme="teal"
+                isDisabled={!recaptchaToken || isSubmitting}
+                isLoading={isSubmitting}
+                alignSelf="flex-start"
+              >
+                Send Message
+              </Button>
+            </VStack>
+          </Box>
 
-                                <Button
-                                    type="submit"
-                                    colorScheme="teal"
-                                    size="md"
-                                    isDisabled={!recaptchaToken || isSubmitting} // Disable if no token or form is submitting
-                                    isLoading={isSubmitting} // Show loading state when submitting
-                                >
-                                    Send Message
-                                </Button>
-                            </VStack>
-                        </form>
-                    </Container>
-                </Box>
-            </Container>
-        </ChakraProvider>
-    );
+          <Text mt={6} textAlign="center" color="gray.600" fontSize="sm">
+            Prefer email? Write to{" "}
+            <Link href="mailto:hello@abmcodeworks.com" color="abm.teal">
+              hello@abmcodeworks.com
+            </Link>
+          </Text>
+        </Container>
+      </Box>
+
+      {/* FOOTER */}
+      <Box as="footer" bg="abm.navy" color="gray.100">
+        <Container maxW="container.xl" py={6}>
+          <Flex
+            align="center"
+            justify="space-between"
+            direction={{ base: "column", md: "row" }}
+            gap={3}
+          >
+            <HStack spacing={3}>
+              <Image src={logo} alt="ABM Codeworks" boxSize="28px" />
+              <Text>
+                © {new Date().getFullYear()} ABM Codeworks. All rights
+                reserved.
+              </Text>
+            </HStack>
+            <HStack spacing={6}>
+              <NavLink href="#services" text="Services" />
+              <NavLink href="#clients" text="Clients" />
+              <NavLink href="#contact" text="Contact" />
+            </HStack>
+          </Flex>
+        </Container>
+      </Box>
+    </ChakraProvider>
+  );
 }
+
+/* ─────────────────────────────
+   Helper Components
+   ───────────────────────────── */
+const NavLink = ({ href, text, ...rest }) => (
+  <Link
+    href={href}
+    color="gray.100"
+    fontWeight="medium"
+    _hover={{ color: "abm.teal" }}
+    {...rest}
+  >
+    {text}
+  </Link>
+);
+
+const ServiceCard = ({ icon, title, desc }) => (
+  <VStack
+    align="flex-start"
+    spacing={3}
+    p={6}
+    bg="white"
+    borderRadius="xl"
+    boxShadow="xs"
+    border="1px solid"
+    borderColor="gray.100"
+  >
+    <Icon as={icon} boxSize={8} color="abm.teal" />
+    <Heading as="h3" size="md">
+      {title}
+    </Heading>
+    <Text color="gray.600">{desc}</Text>
+  </VStack>
+);
+
+const ClientLogo = ({ href, src, alt }) => (
+  <Link href={href} isExternal _hover={{ transform: "translateY(-2px)" }}>
+    <Image
+      src={src}
+      alt={alt}
+      maxH="60px"
+      mx="auto"
+      filter="grayscale(100%)"
+      opacity={0.8}
+      _hover={{ filter: "grayscale(0%)", opacity: 1 }}
+    />
+  </Link>
+);
 
 export default Home;
