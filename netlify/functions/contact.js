@@ -51,9 +51,10 @@ export async function handler(event) {
             });
         }
 
-        const toEmail = process.env.CONTACT_TO_EMAIL || "admin@abmcodeworks.com";
+        const toEmail = process.env.CONTACT_TO_EMAIL || "hello@abmcodeworks.com";
         const fromEmail =
-            process.env.CONTACT_FROM_EMAIL || "ABM Codeworks <onboarding@resend.dev>";
+            process.env.CONTACT_FROM_EMAIL ||
+            "ABM Codeworks <admin@abmcodeworks.com>";
 
         const { data, error } = await resend.emails.send({
             from: fromEmail,

@@ -63,11 +63,11 @@ function Contact({
                             </Text>
 
                             <Link
-                                href="mailto:admin@abmcodeworks.com"
+                                href="mailto:hello@abmcodeworks.com"
                                 color="abm.teal"
                                 fontWeight="800"
                             >
-                                admin@abmcodeworks.com
+                                hello@abmcodeworks.com
                             </Link>
                         </Box>
                     </Stack>
