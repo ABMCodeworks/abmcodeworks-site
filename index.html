@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-ZW">
 
 <head>
   <!-- Google tag (gtag.js) -->
@@ -16,64 +16,106 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Title -->
-  <title>ABM Codeworks</title>
+  <title>
+    ABM Codeworks | Web, Mobile & Software Development in Zimbabwe
+  </title>
 
-  <!-- Meta Description for SEO -->
   <meta name="description"
-    content="ABM Codeworks designs and builds robust web and mobile applications, integrating modern architectures and cloud services to help organisations move faster with confidence." />
+    content="ABM Codeworks designs and builds reliable web apps, mobile apps, custom dashboards, school systems, e-commerce platforms and cloud software for organisations in Zimbabwe and beyond." />
 
-  <!-- Meta Keywords (optional; search engines largely ignore this) -->
   <meta name="keywords"
-    content="ABM Codeworks, software development, web development, mobile app development, Android, iOS, React, Flutter, Firebase, Zimbabwe" />
+    content="ABM Codeworks, software development Zimbabwe, web development Zimbabwe, mobile app development Zimbabwe, React developer Zimbabwe, Flutter developer Zimbabwe, Firebase development, custom software, school systems, business dashboards, e-commerce development" />
 
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="ABM Codeworks — Web & Mobile Software Development" />
-  <meta property="og:description"
-    content="ABM Codeworks creates high-performance web and mobile apps using modern stacks like React, Flutter, and Firebase." />
-  <meta property="og:image" content="/assets/abm-og-image.png" />
-  <meta property="og:url" content="https://www.abmcodeworks.com" />
+  <meta name="author" content="ABM Codeworks" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0B172A" />
+
+  <link rel="canonical" href="https://www.abmcodeworks.com/" />
+
+  <meta property="og:site_name" content="ABM Codeworks" />
+  <meta property="og:locale" content="en_ZW" />
   <meta property="og:type" content="website" />
+  <meta property="og:title" content="ABM Codeworks | Web, Mobile & Software Development in Zimbabwe" />
+  <meta property="og:description"
+    content="Reliable web apps, mobile apps, custom dashboards, school systems, e-commerce platforms and cloud software." />
+  <meta property="og:url" content="https://www.abmcodeworks.com/" />
+  <meta property="og:image" content="https://www.abmcodeworks.com/assets/abm-og-image.png" />
+  <meta property="og:image:alt" content="ABM Codeworks software development studio" />
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="ABM Codeworks — Web & Mobile Software Development" />
-  <meta name="twitter:description" content="We design and build reliable web & mobile software for ambitious teams." />
-  <meta name="twitter:image" content="/assets/abm-twitter-image.png" />
+  <meta name="twitter:title" content="ABM Codeworks | Web, Mobile & Software Development in Zimbabwe" />
+  <meta name="twitter:description"
+    content="Reliable web apps, mobile apps, dashboards and cloud software for ambitious organisations." />
+  <meta name="twitter:image" content="https://www.abmcodeworks.com/assets/abm-og-image.png" />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/favicon.ico" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-  <!-- Canonical Link -->
-  <link rel="canonical" href="https://www.abmcodeworks.com" />
-
-  <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@id": "https://www.abmcodeworks.com/#organization",
         "name": "ABM Codeworks",
-        "url": "https://www.abmcodeworks.com",
+        "url": "https://www.abmcodeworks.com/",
         "logo": "https://www.abmcodeworks.com/assets/abm-logo.png",
-        "sameAs": [
-          "https://twitter.com/abmcodeworks",
-          "https://www.linkedin.com/company/abmcodeworks"
-        ],
-        "contactPoint": [
+        "email": "hello@abmcodeworks.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "ZW"
+        },
+        "areaServed": [
           {
-            "@type": "ContactPoint",
-            "contactType": "Customer Service",
-            "areaServed": "ZW",
-            "availableLanguage": ["English"],
-            "email": "hello@abmcodeworks.com"
+            "@type": "Country",
+            "name": "Zimbabwe"
+          },
+          {
+            "@type": "Place",
+            "name": "International"
           }
         ],
-        "description": "ABM Codeworks is a Zimbabwean-based software consultancy specializing in web and mobile application development."
+        "description": "ABM Codeworks is a Zimbabwe-based software development studio building web applications, mobile applications, custom dashboards, e-commerce platforms and cloud systems.",
+        "knowsAbout": [
+          "Web application development",
+          "Mobile app development",
+          "React development",
+          "Flutter development",
+          "Firebase",
+          "Cloud software",
+          "Custom business systems",
+          "E-commerce development",
+          "School management systems"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "Customer service",
+          "email": "hello@abmcodeworks.com",
+          "availableLanguage": ["English"],
+          "areaServed": "ZW"
+        }
+      }
+    </script>
+
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.abmcodeworks.com/#website",
+        "url": "https://www.abmcodeworks.com/",
+        "name": "ABM Codeworks",
+        "publisher": {
+          "@id": "https://www.abmcodeworks.com/#organization"
+        }
       }
     </script>
 </head>
 
 <body>
+  <noscript>
+    ABM Codeworks designs and builds reliable web apps, mobile apps and cloud
+    software. Please enable JavaScript to view the website.
+  </noscript>
+
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
