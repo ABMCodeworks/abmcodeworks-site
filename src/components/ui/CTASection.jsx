@@ -12,7 +12,7 @@ function CTASection() {
                     </Heading>
 
                     <Text color="whiteAlpha.800" fontSize="lg" maxW="680px">
-                        Tell ABM Codeworks what you need built, fixed or improved.
+                        Tell us what you need built, fixed or improved.
                     </Text>
 
                     <Button

@@ -8,7 +8,6 @@ import Hero from "../components/home/Hero";
 import TrustStrip from "../components/home/TrustStrip";
 import About from "../components/home/About";
 import Services from "../components/home/Services";
-import Process from "../components/home/Process";
 import Clients from "../components/home/Clients";
 import CTASection from "../components/ui/CTASection";
 
@@ -28,7 +27,6 @@ function Home() {
         <TrustStrip />
         <About />
         <Services />
-        <Process />
         <Clients />
         <CTASection />
       </Box>

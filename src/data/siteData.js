@@ -28,7 +28,6 @@ export const site = {
 export const navItems = [
     { label: "Services", href: "/#services" },
     { label: "Case Studies", href: "/case-studies" },
-    { label: "Process", href: "/#process" },
     { label: "Clients", href: "/#clients" },
     { label: "Contact", href: "/contact" },
 ];
@@ -121,29 +120,6 @@ export const services = [
         title: "iOS Delivery",
         desc: "App Store readiness, publishing support and platform-specific implementation.",
         href: "/mobile-app-development-zimbabwe",
-    },
-];
-
-export const processSteps = [
-    {
-        number: "01",
-        title: "Understand",
-        text: "We map the users, workflow, risks and success criteria before jumping into code.",
-    },
-    {
-        number: "02",
-        title: "Design",
-        text: "We shape the interface, data structure and technical approach around the actual problem.",
-    },
-    {
-        number: "03",
-        title: "Build",
-        text: "We develop in clear stages so the project stays testable, usable and easy to adjust.",
-    },
-    {
-        number: "04",
-        title: "Launch",
-        text: "We deploy, monitor, refine and support the system once real users start using it.",
     },
 ];
 
