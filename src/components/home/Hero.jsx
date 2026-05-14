@@ -10,7 +10,6 @@ import {
   Heading,
   HStack,
   Icon,
-  SimpleGrid,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -21,7 +20,7 @@ import {
   FaDatabase,
   FaMobileAlt,
 } from "react-icons/fa";
-import { FiActivity, FiCloud, FiCpu, FiTerminal } from "react-icons/fi";
+import { FiActivity, FiCloud, FiTerminal } from "react-icons/fi";
 import { Link as RouterLink } from "react-router-dom";
 
 const workspaceItems = [
@@ -31,33 +30,19 @@ const workspaceItems = [
     label: "Web apps",
     href: "/web-development-zimbabwe",
     service: "Web applications",
-    fileName: "web-app-build.js",
+    fileName: "web-app-build.jsx",
     status: "Interface ready",
     description:
       "Fast React front-ends connected to reliable back-end and cloud services.",
     project: {
       goal: "turn workflows into useful web tools",
-      stack: ["React", "APIs", "Cloud"],
+      stack: ["React", "Vite", "PostgreSQL"],
       focus: "speed + usability",
     },
     checklist: [
       "✓ user journeys mapped",
       "✓ responsive interface designed",
       "✓ dashboard logic connected",
-    ],
-    cards: [
-      {
-        icon: FiCpu,
-        label: "Frontend",
-        value: "React",
-        text: "Component-based builds that stay easier to maintain.",
-      },
-      {
-        icon: FiTerminal,
-        label: "Experience",
-        value: "Fast",
-        text: "Clear pages, smooth flows and practical user journeys.",
-      },
     ],
   },
   {
@@ -72,27 +57,13 @@ const workspaceItems = [
       "Flutter apps for Android and iOS with polished interfaces and reliable data flows.",
     project: {
       goal: "put the workflow into people’s hands",
-      stack: ["Flutter", "Firebase", "Stores"],
+      stack: ["Flutter", "Firebase", "Railway"],
       focus: "mobile-first delivery",
     },
     checklist: [
       "✓ app structure planned",
       "✓ core screens designed",
       "✓ release path prepared",
-    ],
-    cards: [
-      {
-        icon: FaMobileAlt,
-        label: "Platform",
-        value: "iOS + Android",
-        text: "One maintainable codebase for both major platforms.",
-      },
-      {
-        icon: FiCloud,
-        label: "Backend",
-        value: "Connected",
-        text: "Authentication, storage, data and notifications where needed.",
-      },
     ],
   },
   {
@@ -107,27 +78,13 @@ const workspaceItems = [
       "Custom dashboards, reporting platforms and admin portals for teams that need clarity.",
     project: {
       goal: "make important information easier to manage",
-      stack: ["React", "Database", "Reports"],
+      stack: ["React", "Express", "PostgreSQL", "MySQL"],
       focus: "clarity + control",
     },
     checklist: [
       "✓ data structure reviewed",
       "✓ admin actions mapped",
       "✓ reporting views prepared",
-    ],
-    cards: [
-      {
-        icon: FaDatabase,
-        label: "Data",
-        value: "Structured",
-        text: "Information is organised so teams can find what matters quickly.",
-      },
-      {
-        icon: FiCpu,
-        label: "Workflow",
-        value: "Controlled",
-        text: "Admin tools built around the way your team actually works.",
-      },
     ],
   },
   {
@@ -142,27 +99,13 @@ const workspaceItems = [
       "Authentication, databases, storage, serverless functions and app infrastructure.",
     project: {
       goal: "connect the moving parts reliably",
-      stack: ["Firebase", "APIs", "Storage"],
+      stack: ["Firebase", "Netlify", "Cloudflare"],
       focus: "reliability + scale",
     },
     checklist: [
       "✓ auth flow secured",
       "✓ storage rules planned",
       "✓ deployment pipeline shaped",
-    ],
-    cards: [
-      {
-        icon: FiCloud,
-        label: "Infrastructure",
-        value: "Cloud-ready",
-        text: "Built with reliable services that can grow with the product.",
-      },
-      {
-        icon: FiTerminal,
-        label: "Support",
-        value: "Maintainable",
-        text: "Clean setup, clear configuration and easier future updates.",
-      },
     ],
   },
 ];
@@ -224,6 +167,23 @@ function HeroIntro() {
       mx="auto"
       w="100%"
     >
+      <Badge
+        rounded="full"
+        px={4}
+        py={2}
+        bg="whiteAlpha.200"
+        color="white"
+        border="1px solid rgba(255,255,255,0.16)"
+        textTransform="none"
+        fontSize="sm"
+        display="inline-flex"
+        alignItems="center"
+        gap={2}
+      >
+        <Icon as={FiActivity} />
+        Zimbabwe-based software studio
+      </Badge>
+
       <Stack spacing={5} maxW="1220px">
         <Heading
           as="h1"
@@ -263,9 +223,28 @@ function HeroIntro() {
             boxShadow: "0 18px 35px rgba(44,122,123,0.35)",
           }}
         >
-          Start building with us
+          Start a project
+        </Button>
+
+        <Button
+          as="a"
+          href="#services"
+          size="lg"
+          rounded="full"
+          variant="outline"
+          borderColor="whiteAlpha.500"
+          color="white"
+          _hover={{ bg: "whiteAlpha.200" }}
+        >
+          Explore services
         </Button>
       </Stack>
+
+      <HStack spacing={4} wrap="wrap" justify="center" color="whiteAlpha.800">
+        <HeroPill icon={FaCheckCircle} text="Clear scope" />
+        <HeroPill icon={FaCheckCircle} text="Reliable builds" />
+        <HeroPill icon={FaCheckCircle} text="Ongoing support" />
+      </HStack>
     </Stack>
   );
 }
@@ -379,18 +358,7 @@ function DeveloperDesktop() {
           </GridItem>
 
           <GridItem p={{ base: 4, md: 5 }} minW={0}>
-            <Stack spacing={5} minW={0}>
-              <TerminalWindow activeItem={activeItem} />
-
-              <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={4}>
-                {activeItem.cards.map((card) => (
-                  <DesktopCard
-                    key={`${activeItem.key}-${card.label}`}
-                    {...card}
-                  />
-                ))}
-              </SimpleGrid>
-            </Stack>
+            <TerminalWindow activeItem={activeItem} />
           </GridItem>
         </Grid>
       </Box>
@@ -583,39 +551,6 @@ function CodeLine({
       )}
       {text}
     </Text>
-  );
-}
-
-function DesktopCard({ icon, label, value, text }) {
-  return (
-    <Box
-      rounded="3xl"
-      p={5}
-      bg="rgba(255,255,255,0.06)"
-      border="1px solid rgba(255,255,255,0.12)"
-      minW={0}
-    >
-      <Icon as={icon} boxSize={6} color="abm.gold" mb={4} />
-
-      <Text
-        fontSize="xs"
-        color="whiteAlpha.500"
-        fontWeight="900"
-        letterSpacing="0.14em"
-        textTransform="uppercase"
-        mb={1}
-      >
-        {label}
-      </Text>
-
-      <Text fontWeight="900" fontSize="xl" color="white">
-        {value}
-      </Text>
-
-      <Text mt={2} color="whiteAlpha.700" fontSize="sm" lineHeight="1.7">
-        {text}
-      </Text>
-    </Box>
   );
 }
 
