@@ -224,23 +224,6 @@ function HeroIntro() {
       mx="auto"
       w="100%"
     >
-      <Badge
-        rounded="full"
-        px={4}
-        py={2}
-        bg="whiteAlpha.200"
-        color="white"
-        border="1px solid rgba(255,255,255,0.16)"
-        textTransform="none"
-        fontSize="sm"
-        display="inline-flex"
-        alignItems="center"
-        gap={2}
-      >
-        <Icon as={FiActivity} />
-        Zimbabwe-based software studio
-      </Badge>
-
       <Stack spacing={5} maxW="1220px">
         <Heading
           as="h1"
@@ -280,28 +263,9 @@ function HeroIntro() {
             boxShadow: "0 18px 35px rgba(44,122,123,0.35)",
           }}
         >
-          Start a project
-        </Button>
-
-        <Button
-          as="a"
-          href="#services"
-          size="lg"
-          rounded="full"
-          variant="outline"
-          borderColor="whiteAlpha.500"
-          color="white"
-          _hover={{ bg: "whiteAlpha.200" }}
-        >
-          Explore services
+          Start building with us
         </Button>
       </Stack>
-
-      <HStack spacing={4} wrap="wrap" justify="center" color="whiteAlpha.800">
-        <HeroPill icon={FaCheckCircle} text="Clear scope" />
-        <HeroPill icon={FaCheckCircle} text="Reliable builds" />
-        <HeroPill icon={FaCheckCircle} text="Ongoing support" />
-      </HStack>
     </Stack>
   );
 }

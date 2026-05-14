@@ -75,7 +75,7 @@ export const services = [
   {
     icon: FaGlobe,
     title: "Website Design",
-    desc: "Modern websites for Zimbabwean businesses, schools, NGOs and service providers.",
+    desc: "Modern websites for businesses, schools, NGOs and service providers.",
     href: "/website-design-zimbabwe",
   },
   {
