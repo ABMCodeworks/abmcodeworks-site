@@ -6,10 +6,10 @@ import {
   Container,
   Divider,
   Flex,
+  Grid,
   Heading,
   Link,
   ListItem,
-  SimpleGrid,
   Stack,
   Text,
   UnorderedList,
@@ -77,8 +77,13 @@ function LegalPage({ document }) {
           px={{ base: 4, md: 8, xl: 10, "2xl": 12 }}
           py={{ base: 10, md: 16 }}
         >
-          <SimpleGrid columns={{ base: 1, lg: "310px minmax(0, 920px)" }} spacing={{ base: 10, lg: 14 }} alignItems="start">
-            <Stack spacing={6} position={{ lg: "sticky" }} top={{ lg: "104px" }}>
+          <Grid
+            templateColumns={{ base: "minmax(0, 1fr)", lg: "280px minmax(0, 920px)" }}
+            columnGap={{ lg: 14 }}
+            rowGap={10}
+            alignItems="start"
+          >
+            <Stack spacing={6} minW={0}>
               <Box bg="white" border="1px solid" borderColor="abm.line" rounded="2xl" p={5}>
                 <Heading as="h2" size="sm" mb={4}>At a glance</Heading>
                 <Stack spacing={3}>
@@ -197,7 +202,7 @@ function LegalPage({ document }) {
                 </Flex>
               </Flex>
             </Stack>
-          </SimpleGrid>
+          </Grid>
         </Container>
       </Box>
       <Footer />
