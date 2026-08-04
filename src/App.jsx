@@ -189,9 +189,9 @@ function App() {
             <Route path="/bbdevs/*" element={<Navigate to="/" replace />} />
 
             <Route path="*" element={<NotFound />} />
-          </Routes>{" "}
+          </Routes>
+          <CookieBanner />
         </Router>
-        <CookieBanner />
       </ChakraProvider>
     </HelmetProvider>
   );
