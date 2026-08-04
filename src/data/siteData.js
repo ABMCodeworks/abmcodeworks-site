@@ -28,6 +28,7 @@ export const site = {
 export const navItems = [
   { label: "Services", href: "/#services" },
   { label: "Clients", href: "/#clients" },
+  { label: "Drift Mail", href: "/drift-mail" },
   { label: "Portfolio", href: "/portfolio" },
 ];
 

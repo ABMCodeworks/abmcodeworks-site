@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Navigate,
@@ -18,7 +18,20 @@ import Eula from "./pages/Eula";
 import Disclaimer from "./pages/Disclaimer";
 import NotFound from "./pages/NotFound";
 import ContactPage from "./pages/ContactPage";
+import DriftMail from "./pages/DriftMail";
+import LegalCenter from "./pages/LegalCenter";
+import LegalPage from "./pages/LegalPage";
 import CookieBanner from "./components/CookieBanner";
+import {
+  billexDpa,
+  billexPrivacy,
+  billexTerms,
+  cookieNotice,
+  driftPrivacy,
+  driftTerms,
+  privacyRequests,
+  websitePrivacy,
+} from "./data/legalData";
 
 const theme = extendTheme({
   fonts: {
@@ -76,6 +89,53 @@ function App() {
             <Route path="/" element={<Home />} />
 
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/drift-mail" element={<DriftMail />} />
+
+            <Route path="/legal" element={<LegalCenter />} />
+            <Route
+              path="/legal/privacy"
+              element={<LegalPage document={websitePrivacy} />}
+            />
+            <Route
+              path="/legal/cookies"
+              element={<LegalPage document={cookieNotice} />}
+            />
+            <Route
+              path="/legal/privacy-requests"
+              element={<LegalPage document={privacyRequests} />}
+            />
+            <Route
+              path="/drift-mail/privacy"
+              element={<LegalPage document={driftPrivacy} />}
+            />
+            <Route
+              path="/drift-mail/terms"
+              element={<LegalPage document={driftTerms} />}
+            />
+            <Route
+              path="/billex/privacy"
+              element={<LegalPage document={billexPrivacy} />}
+            />
+            <Route
+              path="/billex/terms"
+              element={<LegalPage document={billexTerms} />}
+            />
+            <Route
+              path="/billex/dpa"
+              element={<LegalPage document={billexDpa} />}
+            />
+            <Route
+              path="/drift-mail/privacy-policy"
+              element={<Navigate to="/drift-mail/privacy" replace />}
+            />
+            <Route
+              path="/billex/privacy-policy"
+              element={<Navigate to="/billex/privacy" replace />}
+            />
+            <Route
+              path="/billex/data-deletion"
+              element={<Navigate to="/legal/privacy-requests" replace />}
+            />
 
             <Route
               path="/website-design-zimbabwe"
